@@ -6,4 +6,10 @@
     body {
         @apply bg-neutral-900 flex items-center justify-center text-neutral-200 h-screen
     }
+    h1, h2 {
+        @apply font-serif
+    }
+    button {
+        @apply bg-neutral-600 py-1 px-4 rounded-md shadow-sm
+    }
 }
