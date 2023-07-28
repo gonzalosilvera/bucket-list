@@ -12,4 +12,4 @@ CREATE TABLE users (
     hashed_password VARCHAR(255)
 );
 
--- INSERT INTO list (id, user_email, title, progress, date) VALUES('0', 'gonzalosilvera@gmail.com', 'Read a book', '10', 'Thu Jul 27 2023 14:31:46 GMT-0300 (Uruguay Standard Time)');
+-- INSERT INTO list(id, user_email, title, progress, date) VALUES('0', 'johndoe@test.com', 'Read a book', '10', 'Thu Jul 27 2023 14:31:46 GMT-0300 (Uruguay Standard Time)');

@@ -4,9 +4,9 @@
   "description": "Bucket List Server",
   "main": "./dist/index.js",
   "scripts": {
-    "build": "npx tsc",
+    "build": "tsc",
     "start": "node dist/index.js",
-    "dev": "concurrently \"npx tsc --watch\" \"nodemon -q dist/index.js\"",
+    "dev": "concurrently \"tsc --watch\" \"nodemon -q dist/index.js\"",
     "test": "react-scripts test",
     "eject": "react-scripts eject"
   },
@@ -26,6 +26,8 @@
     "uuid": "^9.0.0"
   },
   "devDependencies": {
+    "@types/cors": "^2.8.13",
+    "@types/pg": "^8.10.2",
     "concurrently": "^8.2.0"
   }
 }
