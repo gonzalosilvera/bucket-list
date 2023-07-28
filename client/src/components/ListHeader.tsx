@@ -1,4 +1,4 @@
-const ListHeader = ({ listName }) => {
+const ListHeader = () => {
     const signOut = () => {
         console.log('Sign Out');
     }

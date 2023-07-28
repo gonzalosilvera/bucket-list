@@ -4,7 +4,7 @@
 
 @layer base {
     body {
-        @apply bg-neutral-900 flex items-center justify-center text-neutral-200 h-screen
+        @apply bg-neutral-900 flex justify-center text-neutral-200 p-5
     }
     #root {
         @apply container w-full
