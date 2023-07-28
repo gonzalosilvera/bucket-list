@@ -1,17 +1,28 @@
-const ListHeader = ( { listName } ) => {
+const ListHeader = ({ listName }) => {
     const signOut = () => {
         console.log('Sign Out');
     }
-    
-    return ( 
-        <>
-            <h2>{listName}</h2>
-            <div className="flex justify-center gap-x-2 mt-2">
-                <button >Add New</button>
-                <button onClick={signOut}>Sign Out</button>
+
+    return (
+        <header className="flex items-end justify-between">
+            <div>
+                <h1 className='text-4xl text-neutral-500'>
+                    Bucket List
+                </h1>
+                <h2 className='text-lg pt-1 text-neutral-600'>
+                    ( ...before it's too late )
+                </h2>
             </div>
-        </>
-     );
+            <ul className="flex justify-center gap-x-2 mt-2">
+                <li>
+                    <button >Add New</button>
+                </li>
+                <li>
+                    <button onClick={signOut}>Sign Out</button>
+                </li>
+            </ul>
+        </header>
+    );
 }
- 
+
 export default ListHeader;
