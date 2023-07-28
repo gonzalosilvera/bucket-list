@@ -31,7 +31,7 @@ function App() {
         ( ...before it's too late )
       </h2>
       <ListHeader listName={"Holiday tick list"} />
-      {sortedTasks.map(task => <ListItem key={task.id} tasks={task}/>)}
+      {sortedTasks.map(task => <ListItem key={task.id} task={task}/>)}
     </div>
   )
 }

@@ -1,7 +1,7 @@
-const ListItem = ( { item } ) => {    
+const ListItem = ( { task } ) => {    
     return ( 
         <li className="flex">
-            {item}
+            { task }
         </li>
      );
 }
