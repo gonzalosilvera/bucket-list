@@ -2,6 +2,7 @@ import { Key, useEffect, useState } from 'react';
 import './App.css'
 import ListHeader from './components/ListHeader'
 import ListItem from './components/ListItem'
+import AddIcon from './components/AddIcon';
 
 function App() {
   const userEmail = 'johndoe@test.com'
@@ -23,10 +24,15 @@ function App() {
 
   return (
     <div className='flex flex-col gap-y-5'>
-      <ListHeader/>
-      <ul className='wrapper'>
-        {sortedTasks?.map((task: { id: Key | null | undefined; }) => <ListItem key={task.id} task={task} />)}
-      </ul>
+      <ListHeader />
+      <main className='wrapper'>
+        <button className='block ml-auto'>
+          <AddIcon />
+        </button>
+        <ul className='mt-4'>
+          {sortedTasks?.map((task: { id: Key | null | undefined; }) => <ListItem key={task.id} task={task} />)}
+        </ul>
+      </main>
     </div>
   )
 }
