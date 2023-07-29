@@ -23,9 +23,7 @@ function App() {
 
   return (
     <div className='flex flex-col gap-y-5'>
-    <div className='wrapper'>
       <ListHeader/>
-    </div>
       <ul className='wrapper'>
         {sortedTasks?.map((task: { id: Key | null | undefined; }) => <ListItem key={task.id} task={task} />)}
       </ul>

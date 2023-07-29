@@ -12,7 +12,7 @@
     h1, h2 {
         @apply font-serif
     }
-    button {
+    button, input[type="submit"] {
         @apply text-sm bg-neutral-700 py-1 px-5 rounded-md shadow-sm shadow-neutral-900
     }
     .wrapper {

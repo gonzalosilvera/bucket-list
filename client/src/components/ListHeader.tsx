@@ -1,10 +1,13 @@
+import Modal from "./Modal";
+
 const ListHeader = () => {
     const signOut = () => {
         console.log('Sign Out');
     }
 
     return (
-        <header className="flex items-end justify-between">
+        <>
+        <header className="wrapper flex items-end justify-between">
             <div>
                 <h1 className='text-4xl text-neutral-500'>
                     Bucket List
@@ -22,6 +25,8 @@ const ListHeader = () => {
                 </li>
             </ul>
         </header>
+        {/* <Modal/> */}
+        </>
     );
 }
 
