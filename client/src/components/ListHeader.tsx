@@ -13,7 +13,7 @@ const ListHeader = () => {
                     ( ...before it's too late )
                 </h2>
             </div>
-            <ul className="flex justify-center gap-x-2 mt-2">
+            <ul className="flex justify-center gap-x-4 mt-2">
                 <li>
                     <button >Add New</button>
                 </li>

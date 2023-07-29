@@ -1,18 +1,16 @@
-import ProgressBar from './ProgressBar'
 import TickIcon from './TickIcon'
 
 const ListItem = ({ task }) => {
     return (
-        <li className="flex gap-x-2">
+        <li className="flex items-center gap-x-2">
             <TickIcon />
             <p className='flex-1 text-left'>{task.title}</p>
-            {/* <ProgressBar /> */}
-            <ul className="flex gap-x-2">
+            <ul className="flex gap-x-4">
                 <li>
-                    <button>Edit</button>
+                    <button className='bg-neutral-700'>Edit</button>
                 </li>
                 <li>
-                    <button>Delete</button>
+                    <button className='bg-neutral-700'>Delete</button>
                 </li>
             </ul>
         </li>

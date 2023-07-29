@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react';
+import { Key, useEffect, useState } from 'react';
 import './App.css'
 import ListHeader from './components/ListHeader'
 import ListItem from './components/ListItem'
@@ -18,13 +18,16 @@ function App() {
   }
 
   useEffect(() => getData, [])
-  const sortedTasks = tasks?.sort((a, b) => new Date(a.date) - new Date(b.date));
+
+  const sortedTasks = tasks?.sort((a: { date: string | number | Date; }, b: { date: string | number | Date; }) => new Date(a.date) - new Date(b.date));
 
   return (
-    <div className='container text-center px-7 py-5 bg-neutral-800 rounded-lg shadow-lg w-full'>
+    <div className='flex flex-col gap-y-5'>
+    <div className='wrapper'>
       <ListHeader/>
-      <ul className='mt-5'>
-        {sortedTasks?.map(task => <ListItem key={task.id} task={task} />)}
+    </div>
+      <ul className='wrapper'>
+        {sortedTasks?.map((task: { id: Key | null | undefined; }) => <ListItem key={task.id} task={task} />)}
       </ul>
     </div>
   )
