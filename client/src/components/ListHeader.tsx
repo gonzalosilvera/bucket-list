@@ -10,9 +10,6 @@ const ListHeader = () => {
                     <h1 className='font-black text-xl text-neutral-500'>
                         BUCKET LIST
                     </h1>
-                    <h2 className='font-sans text-md text-neutral-600'>
-                        ( ...before it's too late )
-                    </h2>
                 </div>
                 <ul className="flex justify-center gap-x-4">
                     <li>
