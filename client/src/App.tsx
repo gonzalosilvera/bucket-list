@@ -30,7 +30,7 @@ function App() {
   }
 
   const sortedTasks = tasks?.sort(
-    (a: { date: string; }, b: { date: string; }) =>
+    (a: { date: string }, b: { date: string }) =>
       +new Date(a.date) - +new Date(b.date)
   );
 
