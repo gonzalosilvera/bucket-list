@@ -2,7 +2,7 @@ import { useState } from "react"
 import { useCookies } from "react-cookie"
 
 const Auth = () => {
-    const [cookies, setCookie,] = useCookies()
+    const [,setCookie,] = useCookies()
     const [isLogin, setIsLogin] = useState<boolean>(true)
     const [email, setEmail] = useState<string | null>(null)
     const [password, setPassword] = useState<string | null>(null)
@@ -12,8 +12,6 @@ const Auth = () => {
         setError(null)
         setIsLogin(status)
     }
-    console.log(email, password, confirmPassword);
-    console.log(cookies);
 
     const handleSubmit = async (e: React.FormEvent<HTMLFormElement>, endpoint: string) => {
         e.preventDefault()
