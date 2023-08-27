@@ -1,7 +1,7 @@
 import { Dispatch, SetStateAction, useState } from 'react';
-import BinIcon from './BinIcon';
 import EditIcon from './EditIcon';
-import { v4 as uuidv4 } from 'uuid';
+import BinIcon from './BinIcon';
+import CheckIcon from './CheckIcon';
 
 interface Tasks {
     task: {
@@ -20,13 +20,13 @@ const ListItem = ({ task, mode, getData, setCreateMode }: Tasks) => {
     const createMode = mode === "create" ? true : false;
     const [editMode, setEditMode] = useState(createMode);
     const data = {
-        id: createMode ? uuidv4() : task.id,
+        id: createMode ? '' : task.id,
         user_email: task.user_email,
         title: createMode ? null : task.title,
         checked: createMode ? false : task.checked,
         date: createMode ? new Date() : task.date
     }
-
+    
     const formAction = (e: { preventDefault: () => void; }) => {
         e.preventDefault()
         editMode ? (
@@ -39,7 +39,7 @@ const ListItem = ({ task, mode, getData, setCreateMode }: Tasks) => {
 
     const postData = async () => {
         try {
-            const response = await fetch('http://localhost:8000/list', {
+            const response = await fetch(`${import.meta.env.VITE_SERVERURL}/list`, {
                 method: "POST",
                 headers: { 'Content-Type': 'application/json' },
                 body: JSON.stringify(data)
@@ -56,7 +56,7 @@ const ListItem = ({ task, mode, getData, setCreateMode }: Tasks) => {
 
     const editData = async () => {
         try {
-            const response = await fetch(`http://localhost:8000/list/${task.id}`, {
+            const response = await fetch(`${import.meta.env.VITE_SERVERURL}/list/${task.id}`, {
                 method: "PUT",
                 headers: { 'Content-Type': 'application/json' },
                 body: JSON.stringify(data)
@@ -76,7 +76,7 @@ const ListItem = ({ task, mode, getData, setCreateMode }: Tasks) => {
         if (createMode) { setCreateMode(false) }
         else {
             try {
-                const response = await fetch(`http://localhost:8000/list/${task.id}`, {
+                const response = await fetch(`${import.meta.env.VITE_SERVERURL}/list/${task.id}`, {
                     method: "DELETE",
                 })
                 if (response.status === 200) {
@@ -91,48 +91,54 @@ const ListItem = ({ task, mode, getData, setCreateMode }: Tasks) => {
 
     const handleChange = (e: { target: { value: string | null; }; }) => {
         data.title = e.target.value;
+        console.log(data);
     }
 
-    const checkData = (e: { target: { checked: boolean; }; }) => {
-        const checked = e.target.checked;
-        data.checked = checked;
+    const checkData = async (e: { preventDefault: () => void; }) => {
+        e.preventDefault()
+        data.checked = true
         editData()
     }
 
     return (
-        <li className={data.checked ? 'opacity-40' : undefined}>
-            <form className="flex flex-1 items-center gap-x-2 group h-8">
-                <div className='flex items-center justify-end w-2'>
-                    {!editMode && <input
-                        type="checkbox"
-                        name="checked"
-                        defaultChecked={task.checked}
-                        onChange={checkData}
-                    />}
-                </div>
+        <li className="flex gap-x-2 group">
+            <div className='flex items-center justify-center w-6'>
+                {!createMode && (!data.checked ?
+                    <button
+                        className='bg-transparent shadow-none p-0'
+                        onClick={checkData}
+                    >
+                        <CheckIcon checked={data.checked} />
+                    </button>
+                    : <div>
+                        <CheckIcon checked={data.checked} />
+                    </div>
+                )}
+            </div>
+            <form className="flex-1 flex items-center gap-x-2 group">
                 {editMode
                     ? <input
-                        className='flex-1 text-left h-full text-neutral-300 bg-neutral-900 px-3 py-1 rounded-lg mx-2'
+                        className='flex-1 text-left h-full text-neutral-300 bg-neutral-900 px-2 py-1 rounded-lg'
                         type="text"
                         name='title'
                         defaultValue={task.title}
                         onChange={handleChange} />
-                    : <p className='flex-1 py-1 px-5'>{task.title}</p>
+                    : <p className={`flex-1 py-1 px-2${data.checked ? ' opacity-40' : ''}`}>{task.title}</p>
                 }
-                <button
+                {
+                    !data.checked &&
+                    <button
+                    className='h-8 text-sm bg-transparent px-2 rounded-md shadow-none'
                     type='submit'
-                    className='h-full bg-neutral-700'
                     onClick={formAction}
-                >
-                    <EditIcon edit={editMode} />
-                </button>
-                <button
-                    className='h-full bg-red-950'
-                    onClick={removeData}
-                >
-                    <BinIcon />
-                </button>
+                    >
+                        <EditIcon edit={editMode} />
+                    </button>
+                }
             </form>
+            <button onClick={removeData}>
+                <BinIcon />
+            </button>
         </li>
     )
 }

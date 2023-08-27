@@ -1,24 +1,32 @@
-const ListHeader = () => {
+import { Dispatch, SetStateAction } from 'react';
+import LogoutIcon from './LogoutIcon';
+import AddIcon from './AddIcon';
+import { useCookies } from 'react-cookie';
+
+
+const ListHeader = ({ setCreateMode }:
+    { setCreateMode: Dispatch<SetStateAction<boolean>> }) => {
+    const [,,removeCookie] = useCookies()
+
     const signOut = () => {
         console.log('Sign Out');
+        removeCookie('Email');
+        removeCookie('AuthToken');
+        window.location.reload()
     };
 
     return (
-        <>
-            <header className="wrapper flex items-center justify-between">
-                <div className="flex items-center gap-x-4">
-                    <h1 className='font-black text-xl text-neutral-500'>
-                        BUCKET LIST
-                    </h1>
-                </div>
-                <ul className="flex justify-center gap-x-4">
-                    <li>
-                        <button onClick={signOut}>Sign Out</button>
-                    </li>
-                </ul>
-            </header>
-            {/* <Modal/> */}
-        </>
+        <header className="flex justify-between">
+            <button className="w-10 bg-neutral-700 px-2" onClick={signOut}>
+                <LogoutIcon />
+            </button>
+            <h1 className='font-black text-xl text-neutral-500 w-fit'>
+                BUCKET LIST
+            </h1>
+            <button className="w-10 bg-neutral-700 px-2" onClick={() => setCreateMode(true)}>
+                <AddIcon />
+            </button>
+        </header>
     );
 }
 

@@ -3,6 +3,8 @@ import { pool } from './db';
 import { v4 as uuidv4 } from 'uuid';
 import cors from 'cors';
 import dotenv from 'dotenv';
+import bcrypt from 'bcrypt';
+import jwt from 'jsonwebtoken';
 
 const app: Express = express();
 app.use(cors())
@@ -54,6 +56,7 @@ app.put('/list/:id', async (req, res) => {
   }
 })
 
+// delete item
 app.delete('/list/:id', async (req, res) => {
   const { id } = req.params;
   try {
@@ -66,6 +69,46 @@ app.delete('/list/:id', async (req, res) => {
   }
 })
 
+// user sign up
+app.post('/signup', async (req, res) => {
+  const { email, password } = req.body
+  const salt = bcrypt.genSaltSync(10)
+  const hashedPassword = bcrypt.hashSync(password, salt)
+  try {
+    const query = 'INSERT INTO users (email, hashed_password) VALUES($1, $2)';
+    const values = [email, hashedPassword];
+    const token = jwt.sign({ email }, 'secret', { expiresIn: '1hr' })
+    const result = await pool.query(query, values);
+    res.json({ email, token })
+  } catch (error: any) {
+    console.error(error.detail);
+    error && res.json({ detail: error.detail })
+  }
+})
+
+// user login
+app.post('/login', async (req, res) => {
+  const { email, password } = req.body
+  try {
+    const query = 'SELECT * FROM users WHERE email = $1';
+    const values = [email];
+    const result = await pool.query(query, values);
+    if (!result.rows.length) {
+      return res.json({ detail: "User does not exist!" })
+    }
+    const success = await bcrypt.compare(password, result.rows[0].hashed_password)
+    const token = jwt.sign({ email }, 'secret', { expiresIn: '1hr' })
+
+    if (success) {
+      res.json({'email': result.rows[0].email, token})
+    }
+    else {
+      res.json({detail: 'Login failed'})
+    }
+  } catch (error) {
+    console.error(error);
+  }
+})
 
 
 app.listen(port, () => {

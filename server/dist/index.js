@@ -18,6 +18,8 @@ const db_1 = require("./db");
 const uuid_1 = require("uuid");
 const cors_1 = __importDefault(require("cors"));
 const dotenv_1 = __importDefault(require("dotenv"));
+const bcrypt_1 = __importDefault(require("bcrypt"));
+const jsonwebtoken_1 = __importDefault(require("jsonwebtoken"));
 const app = (0, express_1.default)();
 app.use((0, cors_1.default)());
 app.use(express_1.default.json());
@@ -66,6 +68,7 @@ app.put('/list/:id', (req, res) => __awaiter(void 0, void 0, void 0, function* (
         console.error(error);
     }
 }));
+// delete item
 app.delete('/list/:id', (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     const { id } = req.params;
     try {
@@ -73,6 +76,46 @@ app.delete('/list/:id', (req, res) => __awaiter(void 0, void 0, void 0, function
         const values = [id];
         const result = yield db_1.pool.query(query, values);
         res.json(result);
+    }
+    catch (error) {
+        console.error(error);
+    }
+}));
+// user sign up
+app.post('/signup', (req, res) => __awaiter(void 0, void 0, void 0, function* () {
+    const { email, password } = req.body;
+    const salt = bcrypt_1.default.genSaltSync(10);
+    const hashedPassword = bcrypt_1.default.hashSync(password, salt);
+    try {
+        const query = 'INSERT INTO users (email, hashed_password) VALUES($1, $2)';
+        const values = [email, hashedPassword];
+        const token = jsonwebtoken_1.default.sign({ email }, 'secret', { expiresIn: '1hr' });
+        const result = yield db_1.pool.query(query, values);
+        res.json({ email, token });
+    }
+    catch (error) {
+        console.error(error.detail);
+        error && res.json({ detail: error.detail });
+    }
+}));
+// user login
+app.post('/login', (req, res) => __awaiter(void 0, void 0, void 0, function* () {
+    const { email, password } = req.body;
+    try {
+        const query = 'SELECT * FROM users WHERE email = $1';
+        const values = [email];
+        const result = yield db_1.pool.query(query, values);
+        if (!result.rows.length) {
+            return res.json({ detail: "User does not exist!" });
+        }
+        const success = yield bcrypt_1.default.compare(password, result.rows[0].hashed_password);
+        const token = jsonwebtoken_1.default.sign({ email }, 'secret', { expiresIn: '1hr' });
+        if (success) {
+            res.json({ 'email': result.rows[0].email, token });
+        }
+        else {
+            res.json({ detail: 'Login failed' });
+        }
     }
     catch (error) {
         console.error(error);
